@@ -1,0 +1,66 @@
+---
+title: "blah"
+output: html_document
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(flair)
+library(glue)
+```
+
+
+```{r, echo = FALSE}
+textInput("var_1", 
+          "What variable ok?",
+          value = "Sepal.Length")
+
+htmlOutput("my_code")
+
+plotOutput("my_plot")
+```
+
+```{r plot, eval = FALSE}
+ggplot(iris, aes(x = {input$var_1})) +
+               geom_{input$plottype}()
+```
+
+
+
+
+```{r}
+gild <- function(text){
+
+  my_code <- renderText({
+    
+    glue(text) %>%
+      flair(glue("{input$var_1}")) %>%
+      txt_tocode()
+    
+    ### This needs work but it's cool
+    
+  })
+  
+  my_plot <- renderPlot({
+    eval(parse(text = glue(text)))
+  })
+  
+  return(list(code = code, plot = plot))
+
+}
+```
+
+```{r, context = "server"}
+my_gild <- reactive(gild('ggplot(iris, aes(x = {input$var_1})) +
+               geom_{input$plottype}()'))
+
+output$my_plot <- my_gild()$plot
+output$my_code <- my_gild()$code
+```
+
+

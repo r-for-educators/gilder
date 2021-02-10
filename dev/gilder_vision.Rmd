@@ -1,0 +1,33 @@
+---
+title: "Untitled"
+author: "Kelly Bodwin"
+date: "9/10/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r hist}
+library(palmerpenguins)
+
+penguins %>%
+  gglot(aes(x = bill_length_mm)) +
+  geom_histogram()
+```
+
+
+```{r}
+gild("hist") %>%
+  gild_filter(Species) %>%
+  gild_aes("x", vars(bill_length_mm, bill_depth_mm))
+
+
+### this would make a shiny app where:
+## you chose from the possible Species and see the filtered data in the plot
+## you choose between bill_length and bill_depth for the x-axis
+```
+
+

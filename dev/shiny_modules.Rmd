@@ -1,0 +1,121 @@
+---
+title: "blah"
+output: gilder::knit_gild
+  actual: rmdformats::readthedown
+runtime: prerendered_shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(flair)
+library(glue)
+library(here)
+library(shiny)
+```
+```{r}
+
+source(here("dev", "gilder_modules.R"))
+
+```
+
+## Step 1:  Write the code for static output
+
+```{r plot1, include = FALSE, eval = FALSE}
+ggplot(iris, aes(x = Sepal.Length)) +
+             geom_histogram()
+```
+
+```{r}
+something("plot1") %>%
+  gild("Sepal.Length",
+       input = "textInput",
+       list("What do you want?")) %>%
+  shine(output = "verbatimTextOutput")
+```
+
+
+```{r summary1, include = FALSE, eval = FALSE}
+summary(iris$Sepal.Length)
+```
+
+## Step 2: Create your user input prompts
+
+```{r, echo = FALSE}
+
+ns_1 <- NS("question1")
+
+textInput(ns_1("var"), 
+          "What variable do you want to visualize?",
+          value = "Sepal.Length")
+
+textInput(ns_1("type"),
+          "What geometry should we use?")
+
+```
+
+## Step 3: flair and gild your code
+
+```{r, echo = FALSE}
+
+decorate("plot1") %>%
+  gild("var" = "Sepal.Length", 
+       "type" = "histogram") %>%
+  flair()
+
+decorate("summary1") %>%
+  gild("var" = "Sepal.Length") %>%
+  shindig()
+
+```
+
+```{r}
+my_outputs <- list("plot1" = "plotOutput", 
+                  "summary1" = "verbatimTextOutput",)
+
+shindigOutput("question1", my_outputs, show_code = TRUE)
+```
+
+
+
+## Step 4: Include server statements
+
+```{r, context = "server"}
+my_renders <- list("plot1" = "renderPlot",
+                   "summary1" = "renderPrint")
+
+shindigServer("question1", my_renders)
+```
+
+
+```{r}
+decorate("plot1") %>%
+         gild("var_1" = "Sepal.Length",
+              "textInput",
+              list(...)) 
+```
+
+
+
+----
+
+
+```{r}
+textInput("var_1")
+```
+
+```{r, context = "server"}
+
+my_code <- 'ggplot(iris, aes(x = input$var_1)) +
+             geom_histogram()'
+
+renderPlot({eval(parse(text = my_code()))})
+
+renderFlair(my_code())
+
+
+```
+

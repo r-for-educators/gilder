@@ -1,0 +1,39 @@
+---
+title: "Untitled"
+output: html_document
+runtime: shinyrmd
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(shiny)
+library(here)
+library(rmarkdown)
+library(flair)
+library(tidyverse)
+library(gilder)
+```
+
+```{r plot1, eval = FALSE}
+plot(1:{num}, color = "blue")   
+```
+
+
+```{r}
+textInput("color", "quoi color?")
+sliderInput("num", "number", min = 1, max = 20, value = 10)
+```
+
+```{r}
+decorate("plot1", eval = FALSE) %>%
+  flair("plot") %>%
+  gild(c('"blue"' = '{my_col}')) %>%
+  shindig(render_type = "renderPlot", "plot1")
+  
+```
+
+```{r}
+plotOutput("plot1")
+```
+
+

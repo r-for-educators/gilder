@@ -1,0 +1,31 @@
+---
+runtime: shiny
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(shiny)
+library(here)
+library(rmarkdown)
+
+source(here("dev", "shindig.R"))
+
+```
+
+```{r}
+textInput("thing", "quoi?")
+```
+
+```{r}
+code <- "output$bob <- renderText(input$thing)"
+shiny_prerendered_chunk("server", code)
+```
+
+```{r}
+verbatimTextOutput("bob")
+```
+
+
+
+

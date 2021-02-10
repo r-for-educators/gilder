@@ -1,0 +1,52 @@
+---
+title: "Vision - Gilder"
+author: "Kelly Bodwin"
+date: "12/11/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(palmerpenguins)
+
+```
+
+```{r barplot, echo = FALSE, eval = FALSE}
+
+penguins %>%
+  ggplot(aes(x = {{var}})) +
+  geom_{{type}}(position = "{{pos}}")
+
+
+```
+
+... but how to flair????
+
+```{r}
+
+my_barplot <- gild("barplot") %>%
+  add_input("What variable do you want to plot?",
+            type = "text") %>%
+  add_input("What geometry?",
+            type = "dropdown",
+            args = list(choices = c("bar", 
+                              "boxplot", 
+                              "histogram"))) %>%
+  add_input("Optional Position Argument",
+            type = "radioButtons",
+            args = list(choices = c("fill", "dodge"),
+                        selected = "fill"
+            ))
+
+
+my_barplot$code <- my_barplot$code %>%
+  decorate() %>%
+  add_flair()
+
+```
+
+

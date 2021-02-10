@@ -1,0 +1,57 @@
+---
+title: "blah"
+output: gilder::knit_gild
+  actual: rmdformats::readthedown
+runtime: prerendered_shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(flair)
+library(glue)
+library(here)
+library(shiny)
+```
+```{r}
+
+source(here("dev", "gilder_modules.R"))
+
+```
+
+## Step 1:  Write the code for static output
+
+```{r plot1, include = FALSE, eval = FALSE}
+ggplot(iris, aes(x = Sepal.Length)) +
+             geom_histogram()
+```
+
+## Step 2:  Decorate your chunk with gilding and flair
+
+
+```{r}
+decorate("plot1") %>%
+  gild("var" = "Sepal.Length") %>%
+  gild("type" = "histogram") %>%
+  flair_gilded() %>%
+  shindig("renderPlot")
+```
+
+
+## Step 3: Create your user interface
+
+```{r}
+
+textInput("var", 
+          "What variable do you want to visualize?",
+          value = "Sepal.Length")
+
+textInput("type",
+          "What geometry should we use?")
+
+flairOutput("plot1-flaired")
+plotOutput("plot1")
+```

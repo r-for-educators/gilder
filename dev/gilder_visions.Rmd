@@ -1,0 +1,76 @@
+---
+title: "Gilder vision"
+author: "Kelly Bodwin"
+date: "October 11, 2019"
+output: html_document
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+
+gild <- function(code){
+ 
+  sliderInput("bins", "Number of bins:", 30, min = 1, max = 50)
+  
+  renderPlot({
+    x    = faithful[, 2]  # Old Faithful Geyser data
+    bins = seq(min(x), max(x), length.out = input$bins + 1)
+    
+    # draw the histogram with the specified number of bins
+    hist(x, breaks = bins, col = 'darkgray', border = 'white')
+  }) 
+  
+  
+}
+```
+
+```{r}
+# gild({
+#   
+#   ggplot(iris, 
+#          aes(x = @whatever)
+#   ) + geom_histogram()
+#   
+# })
+```
+
+```{r, gild = TRUE}
+
+  ggplot(iris, 
+         aes(x = Petal.Length)  # gild: x = @thing
+  ) + geom_histogram()
+
+```
+
+
+```{r}
+#gild()
+```
+
+```{r}
+  sliderInput("bins", "Number of bins:", 30, min = 1, max = 50)
+  
+  renderPlot({
+    x    = faithful[, 2]  # Old Faithful Geyser data
+    bins = seq(min(x), max(x), length.out = input$bins + 1)
+    
+    # draw the histogram with the specified number of bins
+    hist(x, breaks = bins, col = 'darkgray', border = 'white')
+  }) 
+```
+
+```{r}
+p <- ggplot(iris, aes(x = Petal.Width))
+
+app <- create_basic("my_app")
+
+
+app <- app %>% add_plot()
+```
+
+
+
+
+

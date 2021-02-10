@@ -1,0 +1,25 @@
+---
+title: "Untitled"
+output: rmdformats::readthedown
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r}
+textInput("hi", "How are you?")
+```
+
+```{r, context = "server"}
+output$hi_out <- renderPrint(input$hi)
+```
+
+```{r}
+verbatimTextOutput("hi_out")
+```
+
+

@@ -1,0 +1,44 @@
+---
+title: "blah"
+output: html_document
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(flair)
+library(glue)
+library(knitr)
+```
+
+
+```{r, echo = FALSE}
+textInput("var_1", 
+          "What variable ok?",
+          value = "Sepal.Length")
+
+htmlOutput("yes")
+
+```
+
+```{r, context = "server"}
+my_str <- reactive(glue('ggplot(iris, aes(x = {input$var_1})) +
+               geom_histogram()'))
+
+#output$yes <- renderText(my_str())
+
+output$yes <- renderText({
+  my_str() %>%
+    decorate() %>%
+    flair(glue("{input$var_1}")) %>%
+    knit_print()
+})
+```
+
+
+So, you can't just regenerate static plots and then pull them in via knit_print.  Womp womp.
+
