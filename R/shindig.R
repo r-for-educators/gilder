@@ -69,7 +69,7 @@ shindig <- function(x, render_type) {
   
   
   #cat(server_code)
-  shiny_prerendered_chunk("server", server_code)
+  rmarkdown::shiny_prerendered_chunk("server", server_code)
   
 }
 

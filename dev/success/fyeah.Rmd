@@ -6,11 +6,11 @@ runtime: shinyrmd
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
-library(shiny)
-library(here)
-library(rmarkdown)
-library(flair)
+```
+
+```{r}
 library(tidyverse)
+library(flair)
 library(gilder)
 library(palmerpenguins)
 ```
