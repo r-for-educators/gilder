@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "Success?"
 output: html_document
 runtime: shinyrmd
 ---
@@ -12,10 +12,10 @@ library(rmarkdown)
 library(flair)
 library(tidyverse)
 library(gilder)
+library(palmerpenguins)
 ```
 
 ```{r plot1, eval = FALSE}
-library(palmerpenguins)
 penguins %>%
   ggplot(aes(x  = bill_length_mm)) +
   geom_histogram()
@@ -23,24 +23,26 @@ penguins %>%
 
 
 ```{r}
-varSelectInput("var", 
-               "What variable?",
-               penguins)
+textInput("var", 
+          "What variable?")
 textInput("type", 
           "What type of plot?")
 ```
 
 ```{r, echo = FALSE}
 decorate_shiny("plot1") %>%
-  flair("ggplot") %>%
+  flair("ggplot") %>% 
   gild(var = "bill_length_mm",
        type = "histogram") %>%
+  flair_gilded_all() %>%
+  flair_gilded("var", background = "pink") %>%
   shindig("renderPlot")
   
 ```
 
 ```{r}
-plotOutput("plot1")
+htmlOutput("plot1_flaired")
+plotOutput("plot1") 
 ```
 
 
